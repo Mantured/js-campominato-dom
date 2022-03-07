@@ -41,6 +41,8 @@ function createNewGame() {
     let cellsNumber; //? numero celle totali
     let cellsPerRow; //? celle per riga
 
+    let points = 0; //? mi creo un contatore che mi aggiunga il punteggio
+    const NUMBER_OF_BOMBS = 16; //? COSTANTE CHE NON VA CAMBIATA VALORE ASSOLUTO
     switch (level) {
         case 1: //? che è anche il default
         default:
@@ -63,15 +65,30 @@ function createNewGame() {
 
     for (let i = 1; i <= cellsNumber; i++){
         const cell = createCells(i, cellsPerRow); //? creo una variabile che mi richiami la funzione che crea le celle dove il primo argomento (i numbers) sarà il nostro i e l'argomento cellsperrow sarà cells per row creato poco più sopra
-        cell.addEventListener('click', function () {
-            this.classList.add('clicked');
-        })
+        //| creo dentro l'eventlistner il mio if che mi verifichi che il valoer interno sia presente nella lista della bomblist oppure no per poi aggiungere la classe bomb oppure no
+        let addClass = false;
+            cell.addEventListener('click', function () {
+                if (!bombs.includes(i)) {
+                    addClass = true;
+                    addClass = 'clicked'
+                    //aggiungi un punto
+                    points++;
+                    writeInElementById('score', `Il tuo score è: ${points}`);
+                } else {
+                    addClass;
+                    addClass = 'clicked-bomb'
+                    writeInElementById('score', `Mi dispiace, hai perso, il tuo score è: ${points}`)
+                    // ferma il punteggio
+                }
+                //? testare la versione con solo add e con la classe chemi aggiunge "le classi da ggiungere"
+                cell.classList.add(addClass);
+            })
         document.querySelector('#grid').appendChild(cell);
     }
     //? fuori dal mio cilco for mi creo una nuova lista
 
-    const bombs = generateBombList(16, cellsNumber);
-    console.warn(bombs);
+    const bombs = generateBombList(NUMBER_OF_BOMBS, cellsNumber);
+    console.log(bombs);
 
 }
 
@@ -113,7 +130,7 @@ function generateBombList(bombs, numberOfCells) {
     //? per ogni cella bomba ne creo una nuova che non sia già stata occupata e la aggiungo alla bomblist, restituendola alla fine dela funzione
     const bombList = [];
     for (let i = 0; i < bombs; i++){
-        bombList.push(generateUniqueRandomNumber(bombs, 1, numberOfCells));
+        bombList.push(generateUniqueRandomNumber(bombList, 1, numberOfCells));
     }
     return bombList;
 }
@@ -146,8 +163,23 @@ function generateUniqueRandomNumber(numsBlacklist, min, max){
     // restituisco il numero valido che ho trovato
     return randomInt;
 }
+/**
+ *
+ * @param {*} elementId the element taken from the DOM
+ * @param {*} stringToWrite overwrites the text with the updated score
+ */
+
+function writeInElementById(elementId, stringToWrite) {
+    document.getElementById(elementId).innerHTML = stringToWrite;
+}
 
 
 
 
+//fleg bolleani per il bonus
 
+function gameOver (test) {
+    let fleg = false;
+
+
+}
