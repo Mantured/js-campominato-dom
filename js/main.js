@@ -4,7 +4,19 @@ L'utente indica un livello di difficoltà in base al quale viene generata una gr
     con difficoltà 2 => tra 1 e 81
     con difficoltà 3 => tra 1 e 49
 Quando l'utente clicca su ogni cella, la cella cliccata si colora di azzurro.
+
+Il computer deve generare 16 numeri casuali nello stesso range della difficoltà prescelta: le bombe. I numeri nella lista delle bombe non possono essere duplicati.
+In seguito l'utente clicca su una cella: se il numero è presente nella lista dei numeri generati
+- abbiamo calpestato una bomba
+- la cella si colora di rosso e la partita termina, altrimenti la cella cliccata si colora di azzurro e l'utente può continuare a cliccare sulle altre celle.
+La partita termina quando il giocatore clicca su una bomba o raggiunge il numero massimo possibile di numeri consentiti.
+Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha cliccato su una cella che non era una b.
+BONUS:
+1- quando si clicca su una bomba e finisce la partita, evitare che si possa cliccare su altre celle
+2- quando si clicca su una bomba e finisce la partita, il software scopre tutte le bombe nascoste
+
  */
+
 
 //? individuo è seleziono l'elemento che mi serve per dare il via alla funzione (colui che deve ascoltare)
 
@@ -56,11 +68,14 @@ function createNewGame() {
         })
         document.querySelector('#grid').appendChild(cell);
     }
+    //? fuori dal mio cilco for mi creo una nuova lista
+
+    const bombs = generateBombList(16, cellsNumber);
+    console.warn(bombs);
+
 }
 
-
 //? funzione per generare il singolo elemento
-
 /**
  *
  * @param {*} number number of cells I need to create
@@ -78,14 +93,59 @@ function createCells(number, cellsPerRow) {
     return cell; //? per riportarmi la variabile creata, altrimenti non ci sarebbe
 }
 
+/*
+    mi creo numeri random (16) da mettere in un array non ripetuti
+    dobbiamo gestire il cambiamento al click
+    devo verificare se il valore interno è valido o meno
+        => nel caso in cui sia vero aggiungo una classe A
+        => se è falso aggiungo una classe B
+*/
 
+/**
+ *
+ * @param {*} bombs number of bombs to generate
+ * @param {*} numberOfCells number of cells to refer to for printing
+ * @returns
+ */
 
+function generateBombList(bombs, numberOfCells) {
+    //? dati i numeri di bombe (bombs) da generare ed il numero di celle generate(numberOfCells), creo un nuovo arrey
+    //? per ogni cella bomba ne creo una nuova che non sia già stata occupata e la aggiungo alla bomblist, restituendola alla fine dela funzione
+    const bombList = [];
+    for (let i = 0; i < bombs; i++){
+        bombList.push(generateUniqueRandomNumber(bombs, 1, numberOfCells));
+    }
+    return bombList;
+}
 
+/**
+ * Function that generates a random number between two included values, which is not already present in the given blacklist.
+ *
+ * @param {*} numsBlacklist The blacklist to check.
+ * @param {*} min The minimum value of the random generated integer.
+ * @param {*} max The maximum value of the random generated integer.
+ * @returns A random generated integer which is not present in the blacklist.
+ */
+function generateUniqueRandomNumber(numsBlacklist, min, max){
+    // mi creo una variabile inizializzata a false, che mi controlla se ho generato un numero
+    // valido oppure no
+    let check = false;
+    let randomInt;
 
-
-
-
-
+    // creo un ciclo che continua finché non ho trovato un numero valido (assente in blacklist)
+    while ( !check ){
+        //  genero randomicamente un numero intero tra il min e il max passati come argomenti
+        randomInt  = Math.floor(Math.random() * ((max + 1) - min) + min);
+        // se il numero non è presente nella blacklist allora
+        if (!numsBlacklist.includes(randomInt)) {
+        // informo il resto della funzione che il numero è stato trovato ed è valido
+        // ==> esco dal ciclo while
+        check = true;
+        }
+    }
+    // restituisco il numero valido che ho trovato
+    return randomInt;
+}
 
 
 
