@@ -196,9 +196,19 @@ function writeInElementById(elementId, stringToWrite) {
 
 function checkThisSound (parentElementId, bombList, classToAdd){
     const squares = document.getElementById(parentElementId).children;
-    for (let i = 0; i < squares.length; i++){
-        if (bombList.includes(parseInt(squares[i].firstChild.innerHTML))) {
-            squares[i].classList.add(classToAdd);
+    //? mi passo tutti i quadrati PRESENTI, e li controllo con if
+    for (let i = 0; i < squares.length; i++){ //? tutta la lunghezza dei quadrati
+        if (bombList.includes(parseInt(squares[i].firstChild.innerHTML))) { //? se il quadrato i che ho passato è una bomba
+            squares[i].classList.add(classToAdd); //? le detono tutte
         }
     }
 }
+
+/* function checkThisSound (parentElementId, bombList, classToAdd){
+    const squares = document.getElementById(parentElementId).children;
+    for (let i = 0; i < bombList.length; i++){
+        if (bombList.includes(parseInt(squares[i].firstChild.innerHTML))) {
+            squares[bombList[i]].classList.add(classToAdd);
+        }
+    }
+} */
