@@ -41,7 +41,8 @@ function createNewGame() {
     let cellsNumber; //? numero celle totali
     let cellsPerRow; //? celle per riga
 
-    let points = 0; //? mi creo un contatore che mi aggiunga il punteggio
+    let points = 0;//? mi creo un contatore che mi aggiunga il punteggio
+
     const NUMBER_OF_BOMBS = 16; //? COSTANTE CHE NON VA CAMBIATA VALORE ASSOLUTO
     switch (level) {
         case 1: //? che è anche il default
@@ -67,7 +68,7 @@ function createNewGame() {
         const cell = createCells(i, cellsPerRow); //? creo una variabile che mi richiami la funzione che crea le celle dove il primo argomento (i numbers) sarà il nostro i e l'argomento cellsperrow sarà cells per row creato poco più sopra
         //| creo dentro l'eventlistner il mio if che mi verifichi che il valoer interno sia presente nella lista della bomblist oppure no per poi aggiungere la classe bomb oppure no
         let addClass = false;
-            cell.addEventListener('click', function () {
+        cell.addEventListener('click', function () {
                 if (!bombs.includes(i)) {
                     addClass = true;
                     addClass = 'clicked'
@@ -76,8 +77,8 @@ function createNewGame() {
                     writeInElementById('score', `Il tuo score è: ${points}`);
                 } else {
                     addClass;
-                    addClass = 'clicked-bomb'
-                    writeInElementById('score', `Mi dispiace, hai perso, il tuo score è: ${points}`)
+                    addClass = 'clicked-bomb';
+                    writeInElementById('score', `Mi dispiace, hai perso, il tuo score è: ${points}`);
                     // ferma il punteggio
                 }
                 //? testare la versione con solo add e con la classe chemi aggiunge "le classi da ggiungere"
@@ -89,7 +90,6 @@ function createNewGame() {
 
     const bombs = generateBombList(NUMBER_OF_BOMBS, cellsNumber);
     console.log(bombs);
-
 }
 
 //? funzione per generare il singolo elemento
@@ -174,12 +174,9 @@ function writeInElementById(elementId, stringToWrite) {
 }
 
 
-
-
 //fleg bolleani per il bonus
 
-function gameOver (test) {
-    let fleg = false;
+//# voglo una funzione che mi mostri tutte le bombe dopo aver cliccato su una di esse
+//# voglio che finito il numero di click si fermi
+//# voglio che una volta toccata la bomba smetta di andare avanti
 
-
-}
