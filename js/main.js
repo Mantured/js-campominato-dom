@@ -41,6 +41,8 @@ function createNewGame() {
     let cellsNumber; //? numero celle totali
     let cellsPerRow; //? celle per riga
 
+    isGameOver = false;
+
     let points = 0;//? mi creo un contatore che mi aggiunga il punteggio
 
     const NUMBER_OF_BOMBS = 16; //? COSTANTE CHE NON VA CAMBIATA VALORE ASSOLUTO
@@ -69,6 +71,7 @@ function createNewGame() {
         //| creo dentro l'eventlistner il mio if che mi verifichi che il valoer interno sia presente nella lista della bomblist oppure no per poi aggiungere la classe bomb oppure no
         let addClass = false;
         cell.addEventListener('click', function () {
+            if (!isGameOver) {
                 if (!bombs.includes(i)) {
                     addClass = true;
                     addClass = 'clicked'
@@ -79,11 +82,15 @@ function createNewGame() {
                     addClass;
                     addClass = 'clicked-bomb';
                     writeInElementById('score', `Mi dispiace, hai perso, il tuo score è: ${points}`);
+                    checkThisSound('grid', bombs, 'clicked-bomb');
+                    isGameOver = true;
                     // ferma il punteggio
                 }
                 //? testare la versione con solo add e con la classe chemi aggiunge "le classi da ggiungere"
                 cell.classList.add(addClass);
-            })
+            }
+
+        }, { once: true })
         document.querySelector('#grid').appendChild(cell);
     }
     //? fuori dal mio cilco for mi creo una nuova lista
@@ -180,3 +187,18 @@ function writeInElementById(elementId, stringToWrite) {
 //# voglio che finito il numero di click si fermi
 //# voglio che una volta toccata la bomba smetta di andare avanti
 
+/**
+ *
+ * @param {*} parentElementId parent element identified by id in the DOM
+ * @param {*} bombList array taken inside the function
+ * @param {*} classToAdd class to add to the element taken in the Dom
+ */
+
+function checkThisSound (parentElementId, bombList, classToAdd){
+    const squares = document.getElementById(parentElementId).children;
+    for (let i = 0; i < squares.length; i++){
+        if (bombList.includes(parseInt(squares[i].firstChild.innerHTML))) {
+            squares[i].classList.add(classToAdd);
+        }
+    }
+}
